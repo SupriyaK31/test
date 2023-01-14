@@ -11,13 +11,18 @@ function onSubmit(e){
     e.preventDefault();
     if(nameIn.value === '' || email.value === '' || number.value === '')
     {
-        msg.userList.add('error');
         msg.innerHTML = "enter all fields";
         setTimeout(() => msg.remove(),3000);
     }
     else{
         const li = document.createElement('li');
+        const btn=document.createElement('input');
+        btn.type="button";
+        btn.value="Delete";
         li.appendChild(document.createTextNode(`${nameIn.value}- ${email.value}- ${number.value}`));
+        li.appendChild(btn);
+        userList.appendChild(li);
+       
         let data ={
             name:nameIn.value,
             email:email.value,
@@ -25,8 +30,16 @@ function onSubmit(e){
         } ;
         let data1=JSON.stringify(data);
         localStorage.setItem(email.value,data1);
-        let deselialied = JSON.parse(localStorage.getItem(email.value));
-        userList.appendChild(li);
+        let emailInput=email.value;
+        
+        btn.addEventListener('click',onclick);
+        function onclick(e){
+          e.preventDefault();
+          userList.removeChild(li);
+          console.log(emailInput);
+          localStorage.removeItem(emailInput);
+          
+        }
         nameIn.value='';
         email.value='';
         number.value='';
