@@ -72,9 +72,7 @@ return new Promise((resolve,reject)=>{
         console.log('Before Creating Post Last seen of User:'+user1.lastActivityTime);
     });
 
-CreatePost()
-.then(getPost)
-.then(updateLastUserActivityTime)
-.then(deletePost)
-.then(updateLastUserActivityTime)
+Promise.all([CreatePost(),updateLastUserActivityTime()])
+.then([getPost(),updateLastUserActivityTime()])
+.then([deletePost(),updateLastUserActivityTime()])
 .catch(err=>console.log(err))
