@@ -37,7 +37,17 @@ const email = document.querySelector('#email');
 const number = document.querySelector('#number');
 const userList = document.querySelector('#User');
 const msg = document.querySelector('.msg');
-
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/cb7a17d9ed8a4c94b79b55b9f31a4750/appointmentData")
+    .then((res)=>{
+        console.log(res)
+        for(var i=0;i<res.data.length;i++)
+        {
+          ShowUserOnScreen(res.data[i])
+        }
+    })
+    .catch((err)=>console.log(err))
+})
 myForm.addEventListener('submit',onSubmit);
 
 function onSubmit(e){
@@ -47,57 +57,59 @@ function onSubmit(e){
         msg.innerHTML = "enter all fields";
         setTimeout(() => msg.remove(),3000);
     }
-    else{
-        const li = document.createElement('li');
-        const btn=document.createElement('input');
-        const editBtn = document.createElement('input');
-        btn.type="button";
-        btn.value="Delete";
-        btn.className="btn1";
-        li.appendChild(document.createTextNode(`${nameIn.value}- ${email.value}- ${number.value}`));
-        li.appendChild(btn);
-        li.appendChild(editBtn);
-        userList.appendChild(li);
-       
+    else{       
         let data ={
             "name":nameIn.value,
             "email":email.value,
             "number":number.value
         } ;
-        let data1=JSON.stringify(data);
+        //let data1=JSON.stringify(data);
         console.log(data1);
         axios.post("https://crudcrud.com/api/cb7a17d9ed8a4c94b79b55b9f31a4750/appointmentData",data)
         .then((res)=>console.log(res))
         .catch((err)=>console.log(err))
        //localStorage.setItem(email.value,data1);
-    //     let emailInput=email.value;
-    //     let nameInput=nameIn.value;
-    //     let numberInput=number.value;
-    //     btn.addEventListener('click',onclick);
-    //     function onclick(e){
-    //       e.preventDefault();
-    //       userList.removeChild(li);
-    //       console.log(emailInput);
-    //       localStorage.removeItem(emailInput);
-          
-    //     }
-        editBtn.type="button";
+
+
+    }
+}
+
+function ShowUserOnScreen(user){
+    
+    const li = document.createElement('li');
+        const btn=document.createElement('input');
+        const editBtn = document.createElement('input');
+        btn.type="button";
+        btn.value="Delete";
+        btn.className="btn1";
+        li.appendChild(document.createTextNode(`${user.name}- ${user.email}- ${user.number}`));
+        li.appendChild(btn);
+        li.appendChild(editBtn);
+        userList.appendChild(li);
+
+        let emailInput=user.email;
+        let nameInput=user.name;
+        let numberInput=user.number;
+        btn.addEventListener('click',onclick);
+        function onclick(e){
+          e.preventDefault();
+          userList.removeChild(li);
+          console.log(emailInput);
+          //localStorage.removeItem(emailInput);
+       }
+       editBtn.type="button";
         editBtn.value="Edit";
         editBtn.className="btn1";
         editBtn.addEventListener('click',onclickEdit);
         function onclickEdit(e){
             e.preventDefault();
-            nameIn.value=nameInput;
-            email.value=emailInput;
-            number.value=nameInput;
+            nameIn.value=user.email;
+            email.value=user.name;
+            number.value=user.number;
             userList.removeChild(li);
     //         localStorage.removeItem(emailInput);
         }
-        nameIn.value='';
-        email.value='';
-        number.value='';
-    }
-}
-        </script>
+            }
+    </script>
     </body>
 </html>
