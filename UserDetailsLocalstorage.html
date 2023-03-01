@@ -95,6 +95,12 @@ function ShowUserOnScreen(user){
           e.preventDefault();
           userList.removeChild(li);
           console.log(emailInput);
+          const url="https://crudcrud.com/api/cb7a17d9ed8a4c94b79b55b9f31a4750/appointmentData/";
+          const ID=user._id
+          let Delete=url+ID;
+        axios.delete(Delete)
+          .then((res)=>console.log(res))
+          .catch((err)=>console.log(err));
           //localStorage.removeItem(emailInput);
        }
        editBtn.type="button";
